@@ -8,9 +8,11 @@ import Routes from './routes';
 
 import { UsuarioProvider } from './contexts/user'
 
+import { LogBox } from 'react-native';
 import './services/firebase';
 
 export default function App() {
+  LogBox.ignoreLogs(['Setting a timer'])
   return (
     <UsuarioProvider>
       <Routes />

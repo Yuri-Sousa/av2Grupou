@@ -43,7 +43,6 @@ const UsuarioProvider = ({ children }) => {
   }
 
   const signOut = () => {
-
     firebase.auth().signOut()
       .then(resp => {
         console.warn('Usuario Deslogado com sucesso!')
