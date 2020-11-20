@@ -5,7 +5,6 @@ import { UsuarioContext } from '../../contexts/user';
 
 import {
   Container,
-  Texto,
   ContainerButtons,
   Button,
   ButtonText,
@@ -19,8 +18,9 @@ import {
 import firebase from 'firebase';
 import 'firebase/firestore';
 
-const Chat = () => {
+const Chat = ({ route }) => {
 
+  const { grupo } = route.params;
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
@@ -35,14 +35,13 @@ const Chat = () => {
         ...doc.data()
       }
     })
-    // console.log(data)
     setMessages(data)
   }
 
 
   useEffect(() => {
     const listener = firebase.firestore()
-      .collection('mensagens').onSnapshot(ListenUpdateMessages)
+      .collection(grupo).onSnapshot(ListenUpdateMessages)
 
     return () => listener()
   }, [])
@@ -57,7 +56,7 @@ const Chat = () => {
 
     try {
       let dataHora = new Date();
-      firebase.firestore().collection('mensagens').add({
+      firebase.firestore().collection(grupo).add({
         texto: newMessage,
         lida: false,
         user: user.email,
