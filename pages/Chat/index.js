@@ -11,8 +11,9 @@ import {
   ButtonText,
   Input,
   ContainerMessages,
-  Message
-
+  ContainerMessage,
+  Message,
+  HoraMensagem
 } from './styles';
 
 import firebase from 'firebase';
@@ -55,9 +56,12 @@ const Chat = () => {
     }
 
     try {
+      let dataHora = new Date();
       firebase.firestore().collection('mensagens').add({
         texto: newMessage,
-        lida: false
+        lida: false,
+        user: user.email,
+        dataHora: dataHora
       })
       setNewMessage("");
     } catch (err) {
@@ -69,19 +73,41 @@ const Chat = () => {
     <Container>
 
 
-      <ContainerMessages>
-        {messages.map(message => (
-          <Message key={message.id}>{message.texto}</Message>
-        ))}
+      <ContainerMessages 
+      ref={ref => {this.ContainerMessages = ref}}
+      onContentSizeChange={() => this.ContainerMessages.scrollToEnd({animated: true})}
+      >
+        {
+        
+        messages.sort((a, b) => a.dataHora.toDate() > b.dataHora.toDate()).map(
+          (message) => 
+          
+          <ContainerMessage key={message.id}>
+          
+            <Message messageUser={message.user === user.email? true : false}>
+              {message.texto}
+            </Message>
+
+            <HoraMensagem messageUser={message.user === user.email? true : false}>
+              {
+                message.dataHora.toDate().getHours().toString() +
+                ':' + 
+                message.dataHora.toDate().getMinutes().toString()
+              }
+            </HoraMensagem>
+          
+          </ContainerMessage>
+
+        )  
+
+        }
 
       </ContainerMessages>
-
-
-      <Texto>{user.email}</Texto>
+        
+      
       <ContainerButtons>
-
-        <Input
-          placeholder="Digite sua mensagem"
+        <Input 
+          placeholder="Digite uma mensagem"
           onChangeText={text => setNewMessage(text)}
           value={newMessage}
         />
@@ -89,9 +115,10 @@ const Chat = () => {
         <Button invert={true}
           onPress={() => { handleAddMessages() }}
         >
-          <ButtonText invert={true}>Enviar</ButtonText>
+          <ButtonText>Enviar</ButtonText>
         </Button>
       </ContainerButtons>
+
     </Container>
   )
 }
