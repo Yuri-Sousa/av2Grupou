@@ -5,9 +5,8 @@ export const Container = styled.View`
   flex:1;
   padding:10px 10px 0px 10px;
   flex-direction:column;
-  justify-content: flex-end;
-  align-items:center;
 `;
+
 
 export const CaixaLogin = styled.View`
   height:52%;
@@ -16,6 +15,7 @@ export const CaixaLogin = styled.View`
   border-top-right-radius:25px;
   border-top-left-radius:25px;
   padding:20px;
+  justify-content: flex-end;
 `;
 
 
