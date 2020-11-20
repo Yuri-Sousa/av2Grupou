@@ -27,12 +27,12 @@ import { UsuarioContext } from '../../contexts/user';
 
 const Login = () => {
 
-  const { signIn, signUp } = useContext(UsuarioContext);
+  const { signIn, signUp, resetPassword } = useContext(UsuarioContext);
 
   const [currentButton, setCurrentButton] = useState('aluno');
-  const [email, setEmail] = useState("antonio@domob.me");
+  const [email, setEmail] = useState("sousa.oliveira.yuri@gmail.com");
   const [carregando, setCarregando] = useState(false);
-  const [password, setPassword] = useState("111111");
+  const [password, setPassword] = useState("123456");
 
   function handleSignIn() {
 
@@ -46,7 +46,7 @@ const Login = () => {
 
 
   function handleSignUp() {
-    // console.warn(email, password);
+
     setCarregando(true);
 
     try {
@@ -57,6 +57,17 @@ const Login = () => {
       setCarregando(false);
     }
   }
+
+  function handleResetPassword() {
+
+    try {
+      resetPassword(email)
+    } catch (err) {
+      console.warn(err);
+    }
+
+  }
+
 
   return (
     <Container>
@@ -109,7 +120,7 @@ const Login = () => {
           onChangeText={text => setPassword(text)}
           value={password}
         />
-        <ForgotPassword>
+        <ForgotPassword onPress={() => { handleResetPassword() }}>
           esqueci minha senha
         </ForgotPassword>
         <ContainerButtons>
